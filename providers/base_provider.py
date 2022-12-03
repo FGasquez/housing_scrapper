@@ -13,6 +13,8 @@ disable_ssl = False
 
 if 'disable_ssl' in cfg:
     disable_ssl = cfg['disable_ssl']
+
+
 class BaseProvider(ABC):
     def __init__(self, provider_name, provider_data):
         self.provider_name = provider_name
@@ -20,7 +22,7 @@ class BaseProvider(ABC):
         self.__scraper = cloudscraper.create_scraper()
         if disable_ssl:
             self.__scraper.mount('https://', HostNameIgnoringAdapter())
-    
+
     @abstractmethod
     def props_in_source(self, source):
         pass
