@@ -111,3 +111,12 @@ To test: `python3 -m tests`
 That's up to you. What I've found more useful is to run it once an hour. For that I put it in the crontab:
 
 `0 * * * * cd /<PATH_TO_PROJECT>/housing_tracker && python3 main.py >> run.log 2>&1`
+
+## Docker
+
+https://hub.docker.com/r/pgiu/housing_scraper
+
+
+## TODO 
+
+- [ ] add hooks to lint on commit
