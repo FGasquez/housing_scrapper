@@ -1,8 +1,7 @@
 version: '3.8'
 services:
   app:
-    #image: housing_scrapper
-    image: final
+    image: pgiu/housing_scrapper
     volumes:
       - "${PWD}/properties.db:/app/properties.db"
       - "${PWD}/configuration.yml:/app/configuration.yml"
