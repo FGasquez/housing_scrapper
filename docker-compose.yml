@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  app:
+    #image: housing_scrapper
+    image: final
+    volumes:
+      - "${PWD}/properties.db:/app/properties.db"
+      - "${PWD}/configuration.yml:/app/configuration.yml"

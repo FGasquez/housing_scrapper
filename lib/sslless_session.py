@@ -1,5 +1,5 @@
 from requests import Session
-from lib.hostname_ignoring_adapter import HostNameIgnoringAdapter
+
 
 class SSLlessSession(Session):
     def post(self, url, data, **kwargs):
