@@ -1,7 +1,7 @@
 import logging
 import sqlite3
 from providers.mercadolibre import MercadoLibre
-from providers.fincaraiz import FincaRaiz
+from providers.pads import Pads
 
 
 def register_property(conn, prop):
@@ -40,8 +40,8 @@ def process_properties(provider_name, provider_data):
 
 
 def get_instance(provider_name, provider_data):
-    if provider_name == 'fincaraiz':
-        return FincaRaiz(provider_name, provider_data)
+    if provider_name == 'pads':
+        return Pads(provider_name, provider_data)
     elif provider_name == 'mercadolibre':
         return MercadoLibre(provider_name, provider_data)
     else:

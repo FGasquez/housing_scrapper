@@ -19,7 +19,7 @@ class BaseProvider(ABC):
     def __init__(self, provider_name, provider_data):
         self.provider_name = provider_name
         self.provider_data = provider_data
-        self.__scraper = cloudscraper.create_scraper()
+        self.__scraper = cloudscraper.create_scraper(interpreter='nodejs')
         if disable_ssl:
             self.__scraper.mount('https://', HostNameIgnoringAdapter())
 
