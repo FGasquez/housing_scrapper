@@ -2,6 +2,9 @@ import logging
 import sqlite3
 from providers.mercadolibre import MercadoLibre
 from providers.pads import Pads
+from providers.zonaprop import Zonaprop
+from providers.inmobusqueda import Inmobusqueda
+from providers.properati import Properati
 
 
 def register_property(conn, prop):
@@ -44,5 +47,11 @@ def get_instance(provider_name, provider_data):
         return Pads(provider_name, provider_data)
     elif provider_name == 'mercadolibre':
         return MercadoLibre(provider_name, provider_data)
+    elif provider_name == 'zonaprop':
+        return Zonaprop(provider_name, provider_data)
+    elif provider_name == 'inmobusqueda':
+        return Inmobusqueda(provider_name, provider_data)
+    elif provider_name == 'properati':
+        return Properati(provider_name, provider_data)
     else:
         raise Exception('Unrecognized provider')

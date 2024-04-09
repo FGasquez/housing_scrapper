@@ -20,8 +20,8 @@ class Notifier(NullNotifier):
 
     def notify(self, properties):
         logging.info(f'Notifying about {len(properties)} properties')
-        text = random.choice(self.config['messages'])
-        self.bot.send_message(chat_id=self.config['chat_id'], text=text)
+        # text = random.choice(self.config['messages'])
+        # self.bot.send_message(chat_id=self.config['chat_id'], text=text)
 
         for prop in properties:
             logging.info(f"Notifying about {prop['url']}")
