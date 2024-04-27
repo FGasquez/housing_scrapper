@@ -8,8 +8,9 @@ class Zonaprop(BaseProvider):
         page_link = self.provider_data['base_url'] + source
         page = 1
         processed_ids = []
+        max_pages = 10
 
-        while(True):
+        while(page <= max_pages):
             logging.info(f"Requesting {page_link}")
             page_response = self.request(page_link)
             
@@ -17,24 +18,39 @@ class Zonaprop(BaseProvider):
                 break
             
             page_content = BeautifulSoup(page_response.content, 'lxml')
-            properties = page_content.find_all('div', class_='postingCard')
+            properties = page_content.find_all('div', class_='postings-container')[0]
 
             for prop in properties:
-                # if data-id was already processed we exit
-                if prop['data-id'] in processed_ids:
-                    return
-                processed_ids.append(prop['data-id'])
-                title = prop.find('a', class_='go-to-posting').get_text().strip()
-                price_section = prop.find('span', class_='firstPrice')
-                if price_section is not None:
-                    title = title + ' ' + price_section['data-price']
-                    
+                price = prop.select_one('div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1)')
+                if not price:
+                    continue
+                price = price.get_text().strip()
+
+                title = prop.select_one('div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > h2:nth-child(3) > a:nth-child(1)')
+                if not title:
+                    continue
+                href = title['href']
+                title = title.get_text().strip()
+
+                addr = prop.select_one('.postings-container > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(3) > div:nth-child(1)')
+                if not addr:
+                    addr = title
+                else:
+                    addr = addr.get_text().strip()
+                print(addr)
+                data_id = prop.select_one('div:nth-child(1)')['data-id']
+                # print(data_id)
+                # print(f"{title} - {price}")
+                # print('https://www.zonaprop.com.ar' + href)
+                # print(price)
+                # iterpolate title with price
+                title = f"{title} - {price}"
                 yield {
-                    'title': title, 
-                    'url': self.provider_data['base_url'] + prop['data-to-posting'],
-                    'internal_id': prop['data-id'],
+                    'title': f"{addr} - {title}",
+                    'url': 'https://www.zonaprop.com.ar' + href,
+                    'internal_id': data_id,
                     'provider': self.provider_name
-                    }
+                }
 
             page += 1
             page_link = self.provider_data['base_url'] + source.replace(".html", f"-pagina-{page}.html")

@@ -2,7 +2,6 @@
 
 import logging
 import yaml
-import sys
 from lib.notifier import Notifier
 from providers.processor import process_properties
 
