@@ -1,12 +1,31 @@
-notifier:
-    messages:
-      - 'A MESSAGE'
-    enabled: true
-    chat_id: <CHAT_ID>
-    token: <TOKEN>
+notifiers:
+#  <name>:
+#    message: 
+#      - "New property found!"
+#    type: <notifier_type>
+#    configuration:
+#      <notifier_configuration>
+  telegram1:
+    messages: null # Send this message each time that the scrapper finds a new property.
+    type: telegram # Kind of notifier. It can be telegram, Discord, etc.
+    configuration: # Configuration for the notifier.
+      chat_id: <CHAT_ID>
+      token: <TOKEN>
+      delay: 100 # Delay between messages in milliseconds.
+  discord1:
+    messages: null # Send this message each time that the scrapper finds a new property.
+    type: discord # Kind of notifier. It can be telegram, Discord, etc.
+    configuration: # Configuration for the notifier.
+      webhook_url: <WEBHOOK_URL>
+      delay: 100 # Delay between messages in milliseconds.
+
 providers:
     provider_a:
         base_url: <URL>
         sources:
-          - <PATH>
+          - filter: <FILTER>
+            notifiers:
+              - telegram1
+              - discord1
+
 disable_ssl: true | false
