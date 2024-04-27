@@ -29,13 +29,13 @@ def process_properties(provider_name, provider_data):
     with conn:
         for prop in provider.next_prop():
             cur = conn.cursor()
-            logging.info(f"Processing property {prop['internal_id']}")
+            logging.debug(f"Processing property {prop}")
             cur.execute(stmt, {'internal_id': prop['internal_id'], 'provider': prop['provider']})
             result = cur.fetchone()
             cur.close()
             if result is None:
                 # Insert and save for notification
-                logging.info('It is a new one')
+                logging.debug('It is a new one')
                 register_property(conn, prop)
                 new_properties.append(prop)
 

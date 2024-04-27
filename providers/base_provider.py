@@ -27,10 +27,18 @@ class BaseProvider(ABC):
     def props_in_source(self, source):
         pass
 
+    def process_data(self, source, data):
+        return {
+            **data,
+            'provider': self.provider_name,
+            'notifiers': source.get('notifiers', [])
+        }
+
+
     def request(self, url):
         return self.__scraper.get(url, verify=not disable_ssl)
 
     def next_prop(self):
         for source in self.provider_data['sources']:
-            logging.info(f'Processing source {source}')
+            logging.debug(f'Processing source {source}')
             yield from self.props_in_source(source)

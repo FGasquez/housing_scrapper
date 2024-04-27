@@ -37,20 +37,13 @@ class Zonaprop(BaseProvider):
                     addr = title
                 else:
                     addr = addr.get_text().strip()
-                print(addr)
                 data_id = prop.select_one('div:nth-child(1)')['data-id']
-                # print(data_id)
-                # print(f"{title} - {price}")
-                # print('https://www.zonaprop.com.ar' + href)
-                # print(price)
-                # iterpolate title with price
-                title = f"{title} - {price}"
-                yield {
+                
+                yield self.process_data(source, {
                     'title': f"{addr} - {title}",
                     'url': 'https://www.zonaprop.com.ar' + href,
-                    'internal_id': data_id,
-                    'provider': self.provider_name
-                }
+                    'internal_id': data_id
+                })
 
             page += 1
             page_link = self.provider_data['base_url'] + source.replace(".html", f"-pagina-{page}.html")
