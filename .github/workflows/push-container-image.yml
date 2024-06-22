@@ -1,5 +1,9 @@
 name: Build and publish docker image
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 on:
   push:
     tags:
