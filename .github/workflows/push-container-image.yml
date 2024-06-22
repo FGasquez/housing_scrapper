@@ -18,10 +18,18 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=semver,pattern={{version}}
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
-          context: .
-          file: Dockerfile
+          context: .          
           push: true
-          tags: ghcr.io/${{ github.repository }}/housing_scrapper:${{ github.ref_name }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }
