@@ -1,4 +1,5 @@
 import time
+import logging
 from lib.null_notifier import NullNotifier
 from discord import SyncWebhook
 
