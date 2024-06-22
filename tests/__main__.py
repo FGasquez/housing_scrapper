@@ -2,7 +2,7 @@ import logging
 import yaml
 from providers.zonaprop import Zonaprop
 from providers.argenprop import Argenprop
-from providers.mercadolibre import Mercadolibre
+from providers.mercadolibre import MercadoLibre
 from providers.properati import Properati
 from providers.inmobusqueda import Inmobusqueda
 
@@ -19,7 +19,7 @@ if __name__ == "__main__":
     provider = Argenprop('argenprop', cfg['providers']['argenprop'])
     [print(prop) for prop in provider.next_prop()]
 
-    provider = Mercadolibre('mercadolibre', cfg['providers']['mercadolibre'])
+    provider = MercadoLibre('mercadolibre', cfg['providers']['mercadolibre'])
     [print(prop) for prop in provider.next_prop()]
 
     provider = Properati('properati', cfg['providers']['properati'])
