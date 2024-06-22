@@ -1,6 +1,8 @@
 # Housing scrapper
 
-This is a fork of the original housing scrapper, adapted to the colombian market.
+This is a fork of the original housing scrapper, with a new perspective over notifications and providers. The original project can be found [here](https://github.com/rodrigouroz/housing_scrapper)
+
+We added Discord as notification provider, and the ability to add multiple providers for the same filters. 
 
 ## Installation
 This was tested with Python 3.11.
@@ -34,6 +36,8 @@ in the root folder and name it `configuration.yml`
 
 You need to configure two aspects of the script: the listing providers and the notifier.
 
+The 
+
 For the notifier you need to create a Telegram bot first: [Create a Telegram bot](https://core.telegram.org/bots)
 
 Creating the bot will give you an authorization token. Save it for later, you'll need it.
@@ -54,7 +58,7 @@ You'll see a list with an element, that's the `chat_id` you need to save for lat
 With the authorization token and the chat id you can now configure the notifier. Here's an example:
 
 ```yaml
-notifier:
+notifiers:
     messages:
       - 'Hey, I have found new properties. Check them out:'
       - 'I hope it is lucky day today:'
