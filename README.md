@@ -58,42 +58,28 @@ You'll see a list with an element, that's the `chat_id` you need to save for lat
 With the authorization token and the chat id you can now configure the notifier. Here's an example:
 
 ```yaml
-notifiers:
-    messages:
-      - 'Hey, I have found new properties. Check them out:'
-      - 'I hope it is lucky day today:'
-    enabled: true
-    chat_id: <CHAT_ID>
-    token: <TOKEN>
+  telegram1:
+    messages: null # Send this message each time that the scrapper finds a new property.
+    type: telegram # Kind of notifier. It can be telegram, Discord, etc.
+    configuration: # Configuration for the notifier.
+      chat_id: <CHAT_ID>
+      token: <TOKEN>
+      delay: 100 # Delay between messages in milliseconds.
 ```
 
 One down, one more to go. Now we need to configure the providers. For the sake of simplicity I'll include a sample, which I hope will be good enough:
 
 ```yaml
-providers:
-  zonaprop:
-    base_url: 'https://www.zonaprop.com.ar'
-    sources:
-      - '/departamentos-alquiler-2-habitaciones.html'
-      - '/ph-alquiler-2-habitaciones.html'
-  argenprop:
-    base_url: 'https://www.argenprop.com'
-    sources:
-      - '/departamento-alquiler-pais-argentina-2-dormitorios'
-      - '/ph-alquiler-pais-argentina-2-dormitorios'
-  mercadolibre:
-    base_url: 'https://inmuebles.mercadolibre.com.ar'
-    sources:
-      - '/departamentos/alquiler/2-dormitorios/'
-      - '/casas/alquiler/2-dormitorios/'
-  properati:
-    base_url: 'https://www.properati.com.ar'
-    sources:
-      - '/departamento/alquiler/ambientes:2'
-  inmobusqueda:
-    base_url: 'https://www.inmobusqueda.com.ar'
-    sources:
-      - '/departamento-alquiler-la-plata-casco-urbano.html?cambientes=2.'
+    inmobusqueda:
+        base_url: 'https://www.inmobusqueda.com.ar'
+        sources:
+        #  - '/departamento-alquiler-la-plata-casco-urbano.html'
+        - filter: '/departamento-alquiler-la-plata-casco-urbano.html?cdormitorios=1.2.3.'
+          notifiers:
+            - telegram
+        - filter: '/departamento-alquiler-la-plata-casco-urbano.html?cdormitorios=0.'
+          notifiers:
+            - discord
 ```
 
 If you have issues with SSL certificates you can disable SSL validation with the attribute `disable_ssl`, by default it 

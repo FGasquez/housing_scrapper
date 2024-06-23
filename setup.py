@@ -1,49 +1,56 @@
-import sqlite3
+import os
+from sqlalchemy import create_engine, Column, Integer, String, Index, TIMESTAMP, func
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
-def create_connection(db_file):
-    """ create a database connection to the SQLite database
-        specified by db_file
-    :param db_file: database file
-    :return: Connection object or None
-    """
-    try:
-        conn = sqlite3.connect(db_file)
-        return conn
-    except Exception as e:
-        print(e)
- 
-    return None
+def get_database_url():
+    database_type = os.getenv('DATABASE_TYPE', 'sqlite')    
+    database_url = os.getenv('DATABASE_URL', 'properties.db')
+    database_username = os.getenv('DATABASE_USERNAME', None)
+    database_password = os.getenv('DATABASE_PASSWORD', None)
+    database_host = os.getenv('DATABASE_HOST', None)
+    database_port = os.getenv('DATABASE_PORT', None)
+    database_name = os.getenv('DATABASE_NAME', None)
 
-def execute(conn, sql):
-    try:
-        c = conn.cursor()
-        c.execute(sql)
-        conn.commit()
-        c.close()
-    except Exception as e:
-        print(e)
-
-database = "properties.db"
-
-sql_create_properties_table = """ CREATE TABLE IF NOT EXISTS properties (
-                                    id integer PRIMARY KEY,
-                                    internal_id text NOT NULL,
-                                    provider text NOT NULL,
-                                    url text NOT NULL,
-                                    captured_date integer DEFAULT CURRENT_TIMESTAMP
-                                ); """
-
-sql_create_index_on_properties_table = """ CREATE INDEX properties_internal_provider ON properties (internal_id, provider); """
-
-# create a database connection
-conn = create_connection(database)
-with conn:
-    if conn is not None:
-        # create properties table
-        execute(conn, sql_create_properties_table)
-        # create properties indexes
-        execute(conn, sql_create_index_on_properties_table)
+    if database_type == 'sqlite':
+        return f'sqlite:///{database_url}'
+    elif database_type == 'mysql':
+        return f'mysql+mysqlconnector://{database_username}:{database_password}@{database_host}:{database_port or 3306}/{database_name}'
+    elif database_type == 'postgresql':
+        return f'postgresql+psycopg2://{database_username}:{database_password}@{database_host}:{database_port or 5432}/{database_name}'
     else:
-        print("Error! cannot create the database connection.")        
+        raise ValueError(f"Unsupported database type: {database_type}")
 
-       
+
+database_url = get_database_url()
+
+# Create the SQLAlchemy engine
+engine = create_engine(database_url, echo=True)
+
+# Create a base class for the declarative models
+Base = declarative_base()
+
+# Define the properties table as a model
+class Property(Base):
+    __tablename__ = 'properties'
+
+    id = Column(Integer, primary_key=True)
+    internal_id = Column(String, nullable=False)
+    provider = Column(String, nullable=False)
+    url = Column(String, nullable=False)
+    captured_date = Column(TIMESTAMP, server_default=func.current_timestamp())
+
+    __table_args__ = (
+        Index('properties_internal_provider', 'internal_id', 'provider'),
+    )
+
+# Create a sessionmaker factory
+Session = sessionmaker(bind=engine)
+
+# Create a new session
+session = Session()
+
+# Create the properties table
+Base.metadata.create_all(engine)
+
+# You can add further operations using the session object, e.g., adding new entries, querying, etc.

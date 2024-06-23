@@ -1,7 +1,19 @@
-version: '3.8'
+# version: '3.8'
 services:
   app:
     build: .
+    environment:
+      - DATABASE_TYPE=postgres
+      - DB_HOST=db
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_NAME=properties
     volumes:
       - "${PWD}/properties.db:/app/properties.db"
       - "${PWD}/configuration.yml:/app/configuration.yml"
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: properties
