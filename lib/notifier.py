@@ -22,6 +22,9 @@ class Notifier(NullNotifier):
     def notify(self, properties):
         for prop in properties:
             for notifier_name in prop['notifiers']:
+                if not notifier_name in self.notifiers:
+                    logging.warning(f"Notifier '{notifier_name}' not found.")
+                    continue
                 notifier = self.notifiers.get(notifier_name)
                 if notifier:
                     notifier.notify([prop])

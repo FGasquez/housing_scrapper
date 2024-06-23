@@ -25,3 +25,5 @@ typed-ast==1.5.4
 urllib3==1.26.5
 wrapt==1.11.1
 discord==2.3.2
+sqlalchemy==2.0.31
+psycopg2==2.9.9
