@@ -3,6 +3,7 @@ import random
 import time
 from lib.null_notifier import NullNotifier
 from lib.discord import DiscordNotifier
+from lib.telegram import TelegramNotifier
 from lib.sslless_session import SSLlessSession
 
 class Notifier(NullNotifier):
