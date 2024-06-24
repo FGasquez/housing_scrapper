@@ -41,7 +41,7 @@ class Zonaprop(BaseProvider):
                 
                 yield self.process_data(source, {
                     'title': f"{addr} - {title}",
-                    'url': 'https://www.zonaprop.com.ar' + href,
+                    'url': href,
                     'internal_id': data_id
                 })
 

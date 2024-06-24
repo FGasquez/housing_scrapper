@@ -12,6 +12,7 @@ class TelegramNotifier(NullNotifier):
 
         self.bot = telegram.Bot(token=self.config['token'])
         self.chat_id = self.config['chat_id']
+        self.messages = config.get('messages', [])
 
         if self.config.get('disable_ssl', False):
             self.bot = telegram.Bot(token=self.config['token'], request=SSLlessSession())
@@ -21,8 +22,8 @@ class TelegramNotifier(NullNotifier):
     def notify(self, properties):
         logging.debug(f'Notifying to Telegram about {len(properties)} properties')
         
-        if len(self.config['messages']) > 0:
-            text = random.choice(self.config['messages'])
+        if len(self.messages) > 0:
+            text = random.choice(self.messages)
             self.bot.send_message(chat_id=self.chat_id, text=text)
         
         for prop in properties:

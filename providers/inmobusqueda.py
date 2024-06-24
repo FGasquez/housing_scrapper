@@ -39,7 +39,7 @@ class Inmobusqueda(BaseProvider):
 
                 yield self.process_data(source, {
                     'title': title,
-                    'url': self.provider_data['base_url'] + href,
+                    'url': href,
                     'internal_id': internal_id,
                 })
 
