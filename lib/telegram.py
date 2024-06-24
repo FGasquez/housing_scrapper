@@ -1,5 +1,6 @@
 import telegram
 import time
+from lib.null_notifier import NullNotifier
 
 class TelegramNotifier(NullNotifier):
     def __init__(self, config):
