@@ -17,6 +17,7 @@ pylint==2.3.1
 pyparsing==2.4.7
 python-telegram-bot==13.14
 PyYAML
+PySocks==1.7.1
 requests==2.28.1
 requests-toolbelt==0.9.1
 six==1.12.0
